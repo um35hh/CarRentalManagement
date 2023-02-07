@@ -1,0 +1,69 @@
+﻿@page "/customers/create/"
+@inject HttpClient _client
+@inject NavigationManager _navManager
+
+<h3 class="card-title">Create New customers</h3>
+<hr />
+<br />
+
+<EditForm Model="@customer" OnValidSubmit="CreateCustomer">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <div class="form-group">
+
+        <label>Customers:</label>
+        <div>
+            <InputSelect @bind-Value="customer.Name" class="form-control">
+                <option value="">-- Select Make --</option>
+                @if (customers != null)
+                {
+                    foreach (var make in customers)
+                    {
+                        <option value="@make.Id">@make.Name</option>
+
+                    }
+                }
+
+            </InputSelect>
+            <ValidationMessage For="@(()=> customer.Name)" />
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-success btn-block">
+        Create Customer
+    </button>
+
+</EditForm>
+
+@code {
+
+    Customer customer = new Customer();
+
+    private IList<Make> customers;
+    private IList<Model> Models;
+    private IList<Colour> Colours;
+
+
+
+    protected async override Task OnInitializedAsync()
+
+    {
+
+        customers = await _client.GetFromJsonAsync<List<Make>>($"{Endpoints.CustomersEndpoint}");
+        Models = await _client.GetFromJsonAsync<List<Model>>($"{Endpoints.ModelsEndpoint}");
+
+        Colours = await _client.GetFromJsonAsync<List<Colour>>($"{Endpoints.ColoursEndpoint}");
+
+    }
+
+    private async Task CreateCustomer()
+
+    {
+
+        await _client.PostAsJsonAsync(Endpoints.CustomersEndpoint, customer);
+
+        _navManager.NavigateTo("/customers/");
+
+    }
+
+}

@@ -6,6 +6,13 @@
 <h3 class="card-title">Car Customers</h3>
 <br />
 
+<a href="/makes/create" class="btn btn-secondary">
+    <span class="oi oi-plus"></span>
+    Create New Customers
+</a>
+<br />
+<br />
+
 @if (Customers == null)
 {
     <div class="alert alert-info">Loading Customers...</div>
@@ -28,11 +35,11 @@ else
                     <td>@make.Name</td>
                     <td>
                         <a href="/Customers/view/@make.Id" class="btn btn-primary">
-                            <span class="=oi oi-book"></span>
+                            <span class="oi oi-book"></span>
                         </a>
 
                         <a href="/Customers/edit/@make.Id" class="btn btn-warning">
-                            <span class="=oi oi-pencil"></span>
+                            <span class="oi oi-pencil"></span>
                         </a>
                         <button class="btn btn-danger" @onclick="@(()=>Delete(make.Id))">
                             <span class="oi oi-delete"></span>

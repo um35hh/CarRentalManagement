@@ -1,0 +1,69 @@
+﻿@page "/models/create/"
+@inject HttpClient _client
+@inject NavigationManager _navManager
+
+<h3 class="card-title">Create New models</h3>
+<hr />
+<br />
+
+<EditForm Model="@model" OnValidSubmit="CreateModel">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <div class="form-group">
+
+        <label>Model:</label>
+        <div>
+            <InputSelect @bind-Value="model.Name" class="form-control">
+                <option value="">-- Select Model --</option>
+                @if (models != null)
+                {
+                    foreach (var make in models)
+                    {
+                        <option value="@make.Id">@make.Name</option>
+
+                    }
+                }
+
+            </InputSelect>
+            <ValidationMessage For="@(()=> model.Name)" />
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-success btn-block">
+        Create Model
+    </button>
+
+</EditForm>
+
+@code {
+
+    Model model = new Model();
+
+    private IList<Make> models;
+    private IList<Model> Models;
+    private IList<Colour> Colours;
+
+
+
+    protected async override Task OnInitializedAsync()
+
+    {
+
+        models = await _client.GetFromJsonAsync<List<Make>>($"{Endpoints.ModelsEndpoint}");
+        Models = await _client.GetFromJsonAsync<List<Model>>($"{Endpoints.ModelsEndpoint}");
+
+        Colours = await _client.GetFromJsonAsync<List<Colour>>($"{Endpoints.ColoursEndpoint}");
+
+    }
+
+    private async Task CreateModel()
+
+    {
+
+        await _client.PostAsJsonAsync(Endpoints.ModelsEndpoint, model);
+
+        _navManager.NavigateTo("/models/");
+
+    }
+
+}

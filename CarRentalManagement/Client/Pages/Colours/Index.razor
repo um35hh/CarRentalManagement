@@ -6,6 +6,14 @@
 <h3 class="card-title">Car Colours</h3>
 <br />
 
+<a href="/colours/create" class="btn btn-secondary">
+    <span class="oi oi-plus"></span>
+    Create New Colours
+</a>
+<br />
+<br />
+
+
 @if (Colours == null)
 {
     <div class="alert alert-info">Loading Colours...</div>
@@ -26,11 +34,11 @@ else
                     <td>@make.Name</td>
                     <td>
                         <a href="/Colours/view/@make.Id" class="btn btn-primary">
-                            <span class="=oi oi-book"></span>
+                            <span class="oi oi-book"></span>
                         </a>
 
                         <a href="/Colours/edit/@make.Id" class="btn btn-warning">
-                            <span class="=oi oi-pencil"></span>
+                            <span class="oi oi-pencil"></span>
                         </a>
                         <button class="btn btn-danger" @onclick="@(()=>Delete(make.Id))">
                             <span class="oi oi-delete"></span>
